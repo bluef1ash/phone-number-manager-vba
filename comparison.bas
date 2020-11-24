@@ -1,7 +1,7 @@
-Attribute VB_Name = "µç»°¿â±È¶ÔÄ£¿é"
-Sub ¼ì²éÖØ¸´¼°´íÎó()
+Attribute VB_Name = "ç”µè¯åº“æ¯”å¯¹æ¨¡å—"
+Sub æ£€æŸ¥é‡å¤åŠé”™è¯¯()
     If Len(Range("b3")) = 0 And Len(Range("c3")) = 0 And Len(Range("d3")) = 0 And Len(Range("e3")) = 0 And Len(Range("f3")) = 0 Then
-        MsgBox "ÇëÕıÈ·µ¼ÈëÎÄ¼ş£¡"
+        MsgBox "è¯·æ­£ç¡®å¯¼å…¥æ–‡ä»¶ï¼"
         Exit Sub
     End If
     Dim dictionary, preg, arraySource, arrayContent, i As Integer, currentRow As Integer, countRow As Integer, errorRow As Integer, repeatRange As String, nameAddress As String, isErrors
@@ -13,114 +13,122 @@ Sub ¼ì²éÖØ¸´¼°´íÎó()
         .Pattern = "\d+\-\d+"
     End With
     countRow = [b65536].End(xlUp).Row
-    'ÊıÖµ 9¡¢10 ºÍ 13 ¿ÉÒÔ·Ö±ğ×ª»»ÎªÖÆ±í·û¡¢»»ĞĞ·ûºÍ»Ø³µ·û
+    'æ•°å€¼ 9ã€10 å’Œ 13 å¯ä»¥åˆ†åˆ«è½¬æ¢ä¸ºåˆ¶è¡¨ç¬¦ã€æ¢è¡Œç¬¦å’Œå›è½¦ç¬¦
     Cells.Replace What:=" ", Replacement:=""
     Cells.Replace What:=Chr(9), Replacement:=""
     Cells.Replace What:=Chr(10), Replacement:=""
     Cells.Replace What:=Chr(13), Replacement:=""
     arraySource = Range("b3:f" & countRow)
-    ReDim arrayContent(1 To countRow, 1 To 9)
+    ReDim arrayContent(1 To countRow, 1 To 10)
     Columns.Font.ColorIndex = 0
-    isErrors = Array(False, False, False, False, False, False, False, False, False)
-    arrayTableTitle = Array("µç»°1ÖØ¸´Êı", "µç»°2ÖØ¸´Êı", "µç»°3ÖØ¸´Êı", "ĞÕÃû+µØÖ·ÖØ¸´Êı", "µç»°1Î»Êı", "µç»°2Î»Êı", "µç»°3Î»Êı", "ĞÕÃûÊÇ·ñÎª¿Õ", "Èı¸öµç»°¶¼Îª¿Õ")
+    isErrors = Array(False, False, False, False, False, False, False, False, False, False)
+    arrayTableTitle = Array("ç”µè¯1é‡å¤æ•°", "ç”µè¯2é‡å¤æ•°", "ç”µè¯3é‡å¤æ•°", "å§“å+åœ°å€é‡å¤æ•°", "ç”µè¯1ä½æ•°", "ç”µè¯2ä½æ•°", "ç”µè¯3ä½æ•°", "å§“åæ˜¯å¦ä¸ºç©º", "ä¸‰ä¸ªç”µè¯éƒ½ä¸ºç©º", "åœ°å€é”™è¯¯")
     For i = 1 To UBound(arraySource)
         currentRow = i + 2
-        'µç»°1
+        'ç”µè¯1
         arraySource(i, 3) = CStr(arraySource(i, 3))
         If Len(arraySource(i, 3)) > 0 Then
-            'ÖØ¸´Ïî
+            'é‡å¤é¡¹
             If dictionary.Exists(arraySource(i, 3)) Then
                 repeatRange = dictionary(arraySource(i, 3))
-                arrayContent(i, 1) = "ÖØ¸´ÏîÔÚ" & repeatRange & "µ¥Ôª¸ñ"
+                arrayContent(i, 1) = "é‡å¤é¡¹åœ¨" & repeatRange & "å•å…ƒæ ¼"
                 errorRow = Right(repeatRange, Len(repeatRange) - 1)
-                arrayContent(errorRow - 2, µÚÒ»´ÎÖØ¸´ÁĞÊı(repeatRange)) = "ÖØ¸´ÏîÔÚD" & currentRow & "µ¥Ôª¸ñ"
+                arrayContent(errorRow - 2, ç¬¬ä¸€æ¬¡é‡å¤åˆ—æ•°(repeatRange)) = "é‡å¤é¡¹åœ¨D" & currentRow & "å•å…ƒæ ¼"
                 Rows(errorRow).Font.ColorIndex = 3
                 Rows(currentRow).Font.ColorIndex = 3
             Else
                 dictionary(CStr(arraySource(i, 3))) = "D" & currentRow
             End If
-            'ÅĞ¶ÏÎ»Êı
+            'åˆ¤æ–­ä½æ•°
             If Len(arraySource(i, 3)) = 7 And IsNumeric(arraySource(i, 3)) = True Then
-                arrayContent(i, 5) = "¹Ì¶¨µç»°"
+                arrayContent(i, 5) = "å›ºå®šç”µè¯"
             ElseIf preg.Test(arraySource(i, 3)) = True Then
-                arrayContent(i, 5) = "¹Ì¶¨µç»°"
+                arrayContent(i, 5) = "å›ºå®šç”µè¯"
             ElseIf Len(arraySource(i, 3)) = 11 And IsNumeric(arraySource(i, 3)) = True Then
-                arrayContent(i, 5) = "ÒÆ¶¯µç»°"
+                arrayContent(i, 5) = "ç§»åŠ¨ç”µè¯"
             Else
-                arrayContent(i, 5) = "Î»Êı´íÎó»ò´æÔÚ·ÇÊı×Ö"
+                arrayContent(i, 5) = "ä½æ•°é”™è¯¯æˆ–å­˜åœ¨éæ•°å­—"
                 Rows(currentRow).Font.ColorIndex = 17
             End If
         End If
-        'µç»°2
+        'ç”µè¯2
         arraySource(i, 4) = CStr(arraySource(i, 4))
         If Len(arraySource(i, 4)) > 0 Then
-            'ÖØ¸´Ïî
+            'é‡å¤é¡¹
             If dictionary.Exists(arraySource(i, 4)) Then
                 repeatRange = dictionary(arraySource(i, 4))
-                arrayContent(i, 2) = "ÖØ¸´ÏîÔÚ" & repeatRange & "µ¥Ôª¸ñ"
+                arrayContent(i, 2) = "é‡å¤é¡¹åœ¨" & repeatRange & "å•å…ƒæ ¼"
                 errorRow = Right(repeatRange, Len(repeatRange) - 1)
-                arrayContent(errorRow - 2, µÚÒ»´ÎÖØ¸´ÁĞÊı(repeatRange)) = "ÖØ¸´ÏîÔÚE" & currentRow & "µ¥Ôª¸ñ"
+                arrayContent(errorRow - 2, ç¬¬ä¸€æ¬¡é‡å¤åˆ—æ•°(repeatRange)) = "é‡å¤é¡¹åœ¨E" & currentRow & "å•å…ƒæ ¼"
                 Rows(errorRow).Font.ColorIndex = 4
                 Rows(currentRow).Font.ColorIndex = 4
             Else
                 dictionary(arraySource(i, 4)) = "E" & currentRow
             End If
-            'ÅĞ¶ÏÎ»Êı
+            'åˆ¤æ–­ä½æ•°
             If Len(arraySource(i, 3)) = 7 And IsNumeric(arraySource(i, 3)) = True Then
-                arrayContent(i, 5) = "¹Ì¶¨µç»°"
+                arrayContent(i, 5) = "å›ºå®šç”µè¯"
             ElseIf preg.Test(arraySource(i, 3)) = True Then
-                arrayContent(i, 5) = "¹Ì¶¨µç»°"
+                arrayContent(i, 5) = "å›ºå®šç”µè¯"
             ElseIf Len(arraySource(i, 3)) = 11 And IsNumeric(arraySource(i, 3)) = True Then
-                arrayContent(i, 5) = "ÒÆ¶¯µç»°"
+                arrayContent(i, 5) = "ç§»åŠ¨ç”µè¯"
             Else
-                arrayContent(i, 5) = "Î»Êı´íÎó»ò´æÔÚ·ÇÊı×Ö"
+                arrayContent(i, 5) = "ä½æ•°é”™è¯¯æˆ–å­˜åœ¨éæ•°å­—"
                 Rows(currentRow).Font.ColorIndex = 17
             End If
         End If
-        'µç»°3
+        'ç”µè¯3
         arraySource(i, 5) = CStr(arraySource(i, 5))
         If Len(arraySource(i, 5)) > 0 Then
-            'ÖØ¸´Ïî
+            'é‡å¤é¡¹
             If dictionary.Exists(arraySource(i, 5)) Then
                 repeatRange = dictionary(arraySource(i, 5))
-                arrayContent(i, 3) = "ÖØ¸´ÏîÔÚ" & repeatRange & "µ¥Ôª¸ñ"
+                arrayContent(i, 3) = "é‡å¤é¡¹åœ¨" & repeatRange & "å•å…ƒæ ¼"
                 errorRow = Right(repeatRange, Len(repeatRange) - 1)
-                arrayContent(errorRow - 2, µÚÒ»´ÎÖØ¸´ÁĞÊı(repeatRange)) = "ÖØ¸´ÏîÔÚF" & currentRow & "µ¥Ôª¸ñ"
+                arrayContent(errorRow - 2, ç¬¬ä¸€æ¬¡é‡å¤åˆ—æ•°(repeatRange)) = "é‡å¤é¡¹åœ¨F" & currentRow & "å•å…ƒæ ¼"
                 Rows(errorRow).Font.ColorIndex = 5
                 Rows(currentRow).Font.ColorIndex = 5
             Else
                 dictionary(arraySource(i, 5)) = "F" & currentRow
             End If
-            'ÅĞ¶ÏÎ»Êı
+            'åˆ¤æ–­ä½æ•°
             If Len(arraySource(i, 3)) = 7 And IsNumeric(arraySource(i, 3)) = True Then
-                arrayContent(i, 5) = "¹Ì¶¨µç»°"
+                arrayContent(i, 5) = "å›ºå®šç”µè¯"
             ElseIf preg.Test(arraySource(i, 3)) = True Then
-                arrayContent(i, 5) = "¹Ì¶¨µç»°"
+                arrayContent(i, 5) = "å›ºå®šç”µè¯"
             ElseIf Len(arraySource(i, 3)) = 11 And IsNumeric(arraySource(i, 3)) = True Then
-                arrayContent(i, 5) = "ÒÆ¶¯µç»°"
+                arrayContent(i, 5) = "ç§»åŠ¨ç”µè¯"
             Else
-                arrayContent(i, 5) = "Î»Êı´íÎó»ò´æÔÚ·ÇÊı×Ö"
+                arrayContent(i, 5) = "ä½æ•°é”™è¯¯æˆ–å­˜åœ¨éæ•°å­—"
                 Rows(currentRow).Font.ColorIndex = 17
             End If
         End If
-        'ĞÕÃû+µØÖ·ÖØ¸´Êı
+        'åœ°å€æ˜¯å¦æœ‰â€œç¤¾åŒºâ€
+        commuityIndex = InStr(arraySource(i, 2), "ç¤¾åŒº")
+        If commuityIndex = 0 Then
+            arrayContent(i, 10) = "ç©º"
+            Rows(currentRow).Font.ColorIndex = 14
+        Else
+            arraySource(i, 2) = Mid(arraySource(i, 2), commuityIndex + 2, Len(arraySource(i, 2)))
+        End If
+        'å§“å+åœ°å€é‡å¤æ•°
         nameAddress = arraySource(i, 1) & arraySource(i, 2)
         If dictionary.Exists(nameAddress) Then
             repeatRange = dictionary(nameAddress)
-            arrayContent(i, 4) = "ÖØ¸´ÏîÔÚ" & repeatRange & "ĞĞ"
+            arrayContent(i, 4) = "é‡å¤é¡¹åœ¨" & repeatRange & "è¡Œ"
             Rows(repeatRange).Font.ColorIndex = 9
             Rows(currentRow).Font.ColorIndex = 9
         Else
             dictionary(nameAddress) = currentRow
         End If
-        'ĞÕÃûÊÇ·ñÎª¿Õ
+        'å§“åæ˜¯å¦ä¸ºç©º
         If Len(arraySource(i, 1)) < 1 Then
-            arrayContent(i, 8) = "¿Õ"
+            arrayContent(i, 8) = "ç©º"
             Rows(currentRow).Font.ColorIndex = 13
         End If
-        'Èı¸öµç»°¶¼Îª¿Õ
+        'ä¸‰ä¸ªç”µè¯éƒ½ä¸ºç©º
         If Len(arraySource(i, 3)) < 1 And Len(arraySource(i, 4)) < 1 And Len(arraySource(i, 5)) < 1 Then
-            arrayContent(i, 9) = "¿Õ"
+            arrayContent(i, 9) = "ç©º"
             Rows(currentRow).Font.ColorIndex = 11
         End If
         If isErrors(0) = True Or Len(arrayContent(i, 1)) > 0 Then isErrors(0) = True
@@ -132,25 +140,27 @@ Sub ¼ì²éÖØ¸´¼°´íÎó()
         If isErrors(5) = True Or Len(arrayContent(i, 7)) <> 4 And Len(arrayContent(i, 7)) <> 0 Then isErrors(6) = True
         If isErrors(7) = True Or Len(arrayContent(i, 8)) > 0 Then isErrors(7) = True
         If isErrors(8) = True Or Len(arrayContent(i, 9)) > 0 Then isErrors(8) = True
+        If isErrors(9) = True Or Len(arrayContent(i, 10)) > 0 Then isErrors(9) = True
     Next i
-    Range("j2:r" & countRow) = ""
-    Range("j2:r2") = arrayTableTitle
-    Range("j3:r" & countRow) = arrayContent
+    Range("j2:s" & countRow) = ""
+    Range("j2:s2") = arrayTableTitle
+    Range("j3:s" & countRow) = arrayContent
     If isErrors(0) = False And isErrors(1) = False And isErrors(2) = False And isErrors(3) = False And isErrors(4) = False And isErrors(5) = False And isErrors(6) = False And isErrors(7) = False And isErrors(8) = False Then
-        MsgBox "Ğ»ÌìĞ»µØÈ«²¿ÎŞ´íÎó£¡"
+        MsgBox "è°¢å¤©è°¢åœ°å…¨éƒ¨æ— é”™è¯¯ï¼"
     Else
-        If isErrors(0) = True Then MsgBox "±§Ç¸£¡µç»°1ÓĞÖØ¸´Ïî£¡:("
-        If isErrors(1) = True Then MsgBox "±§Ç¸£¡µç»°2ÓĞÖØ¸´Ïî£¡:("
-        If isErrors(2) = True Then MsgBox "±§Ç¸£¡µç»°3ÓĞÖØ¸´Ïî£¡:("
-        If isErrors(3) = True Then MsgBox "±§Ç¸£¡ĞÕÃûÓëµØÖ·ÓĞÖØ¸´£¡:("
-        If isErrors(4) = True Then MsgBox "±§Ç¸£¡µç»°1ÓĞ´íÎó£¡:("
-        If isErrors(5) = True Then MsgBox "±§Ç¸£¡µç»°2ÓĞ´íÎó£¡:("
-        If isErrors(6) = True Then MsgBox "±§Ç¸£¡µç»°3ÓĞ´íÎó£¡:("
-        If isErrors(7) = True Then MsgBox "±§Ç¸£¡ÎŞĞÕÃû£¡:("
-        If isErrors(8) = True Then MsgBox "±§Ç¸£¡Èı¸öµç»°¶¼Îª¿Õ£¡:("
+        If isErrors(0) = True Then MsgBox "æŠ±æ­‰ï¼ç”µè¯1æœ‰é‡å¤é¡¹ï¼:("
+        If isErrors(1) = True Then MsgBox "æŠ±æ­‰ï¼ç”µè¯2æœ‰é‡å¤é¡¹ï¼:("
+        If isErrors(2) = True Then MsgBox "æŠ±æ­‰ï¼ç”µè¯3æœ‰é‡å¤é¡¹ï¼:("
+        If isErrors(3) = True Then MsgBox "æŠ±æ­‰ï¼å§“åä¸åœ°å€æœ‰é‡å¤ï¼:("
+        If isErrors(4) = True Then MsgBox "æŠ±æ­‰ï¼ç”µè¯1æœ‰é”™è¯¯ï¼:("
+        If isErrors(5) = True Then MsgBox "æŠ±æ­‰ï¼ç”µè¯2æœ‰é”™è¯¯ï¼:("
+        If isErrors(6) = True Then MsgBox "æŠ±æ­‰ï¼ç”µè¯3æœ‰é”™è¯¯ï¼:("
+        If isErrors(7) = True Then MsgBox "æŠ±æ­‰ï¼æ— å§“åï¼:("
+        If isErrors(8) = True Then MsgBox "æŠ±æ­‰ï¼ä¸‰ä¸ªç”µè¯éƒ½ä¸ºç©ºï¼:("
+        If isErrors(9) = True Then MsgBox "æŠ±æ­‰ï¼åœ°å€æ²¡æœ‰åŒ…å«â€œç¤¾åŒºâ€ï¼:("
     End If
 End Sub
-Function µÚÒ»´ÎÖØ¸´ÁĞÊı(s As String)
+Function ç¬¬ä¸€æ¬¡é‡å¤åˆ—æ•°(s As String)
     Dim errorColumn As String, contentColumn As Integer, errorRange As String
     errorColumn = Left(s, 1)
     Select Case errorColumn
@@ -159,19 +169,19 @@ Function µÚÒ»´ÎÖØ¸´ÁĞÊı(s As String)
         Case "F": contentColumn = 3
         Case Else: contentColumn = 0
     End Select
-    µÚÒ»´ÎÖØ¸´ÁĞÊı = contentColumn
+    ç¬¬ä¸€æ¬¡é‡å¤åˆ—æ•° = contentColumn
 End Function
-Sub ¸´ÖÆÉçÇø¹¤×÷±í()
+Sub å¤åˆ¶ç¤¾åŒºå·¥ä½œè¡¨()
     Dim i As Integer, countRow As Integer, arraySource, arrayContent, x As Integer, y As Integer
-    countRow = Worksheets("»ã×Ü").[b65536].End(xlUp).Row
+    countRow = Worksheets("æ±‡æ€»").[b65536].End(xlUp).Row
     If Worksheets.Count < 13 Then
-        shequ = Array("´óº£Ñô", "µÂĞÂ", "ôä´ä", "º£·ÀÓª", "º£¸Û", "»ÆÉ½±±", "»ÆÉ½ÄÏ", "ÄÏºé", "ÄÏÍ¨", "ÎÄ»¯Ô·", "Ø¹¶«", "Ø¹Î÷")
+        shequ = Array("å¤§æµ·é˜³", "å¾·æ–°", "ç¿¡ç¿ ", "æµ·é˜²è¥", "æµ·æ¸¯", "é»„å±±åŒ—", "é»„å±±å—", "å—æ´ª", "å—é€š", "æ–‡åŒ–è‹‘", "æ¯“ä¸œ", "æ¯“è¥¿")
         For i = 0 To i <= 11
             Worksheets.Add(After:=Worksheets(Worksheets.Count)).Name = shequ(i)
         Next i
     End If
-    arrayTableTitle = Array("ĞòºÅ", "»§Ö÷ĞÕÃû", "¼ÒÍ¥µØÖ·", "µç»°1", "µç»°2", "µç»°3", "·Ö°üÈË", "ÉçÇø", "±¸×¢")
-    arraySource = Worksheets("»ã×Ü").Range("b3:i" & countRow)
+    arrayTableTitle = Array("åºå·", "æˆ·ä¸»å§“å", "å®¶åº­åœ°å€", "ç”µè¯1", "ç”µè¯2", "ç”µè¯3", "åˆ†åŒ…äºº", "ç¤¾åŒº", "å¤‡æ³¨")
+    arraySource = Worksheets("æ±‡æ€»").Range("b3:i" & countRow)
     ReDim arrayContent(1 To 3000, 1 To 9)
     x = 1
     For i = 1 To UBound(arraySource)
@@ -187,7 +197,7 @@ Sub ¸´ÖÆÉçÇø¹¤×÷±í()
             arrayContent(x, 9) = arraySource(i, 8)
             With Worksheets(arraySource(i, 7))
                 .Cells.Clear
-                .Range("a1") = "¡°ÆÀÉçÇø¡±»î¶¯µç»°¿âµÇ¼Ç±í£¨" & arraySource(i, 7) & "ÉçÇø£©"
+                .Range("a1") = "â€œè¯„ç¤¾åŒºâ€æ´»åŠ¨ç”µè¯åº“ç™»è®°è¡¨ï¼ˆ" & arraySource(i, 7) & "ç¤¾åŒºï¼‰"
                 .Range("a1:i1").MergeCells = True
                 .Range("a2:i2") = arrayTableTitle
                 .Range("a3:i" & x + 2) = arrayContent
@@ -224,7 +234,7 @@ Sub ¸´ÖÆÉçÇø¹¤×÷±í()
                 arrayContent(x, 9) = arraySource(i + 1, 8)
                 With Worksheets(arraySource(i + 1, 7))
                     .Cells.Clear
-                    .Range("a1") = "¡°ÆÀÉçÇø¡±»î¶¯µç»°¿âµÇ¼Ç±í£¨" & arraySource(i + 1, 7) & "ÉçÇø£©"
+                    .Range("a1") = "â€œè¯„ç¤¾åŒºâ€æ´»åŠ¨ç”µè¯åº“ç™»è®°è¡¨ï¼ˆ" & arraySource(i + 1, 7) & "ç¤¾åŒºï¼‰"
                     .Range("a1:i1").MergeCells = True
                     .Range("a2:i2") = arrayTableTitle
                     .Range("a3:i" & x + 2) = arrayContent
@@ -240,5 +250,5 @@ Sub ¸´ÖÆÉçÇø¹¤×÷±í()
             End If
         End If
     Next i
-    MsgBox "¸´ÖÆ³É¹¦£¡"
+    MsgBox "å¤åˆ¶æˆåŠŸï¼"
 End Sub
