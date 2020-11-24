@@ -1,6 +1,6 @@
 Attribute VB_Name = "电话库比对模块"
 Sub 检查重复及错误()
-    If Len(Range("b3")) = 0 And Len(Range("c3")) = 0 And Len(Range("d3")) = 0 And Len(Range("e3")) = 0 And Len(Range("f3")) = 0 Then
+    If Len(Range("c5")) = 0 And Len(Range("d5")) = 0 And Len(Range("f5")) = 0 And Len(Range("g5")) = 0 And Len(Range("h5")) = 0 Then
         MsgBox "请正确导入文件！"
         Exit Sub
     End If
@@ -12,19 +12,19 @@ Sub 检查重复及错误()
         .IgnoreCase = True
         .Pattern = "\d+\-\d+"
     End With
-    countRow = [b65536].End(xlUp).Row
+    countRow = [c65536].End(xlUp).Row
     '数值 9、10 和 13 可以分别转换为制表符、换行符和回车符
     Cells.Replace What:=" ", Replacement:=""
     Cells.Replace What:=Chr(9), Replacement:=""
     Cells.Replace What:=Chr(10), Replacement:=""
     Cells.Replace What:=Chr(13), Replacement:=""
-    arraySource = Range("b3:f" & countRow)
+    arraySource = Range("c5:h" & countRow)
     ReDim arrayContent(1 To countRow, 1 To 10)
     Columns.Font.ColorIndex = 0
     isErrors = Array(False, False, False, False, False, False, False, False, False, False)
     arrayTableTitle = Array("电话1重复数", "电话2重复数", "电话3重复数", "姓名+地址重复数", "电话1位数", "电话2位数", "电话3位数", "姓名是否为空", "三个电话都为空", "地址错误")
     For i = 1 To UBound(arraySource)
-        currentRow = i + 2
+        currentRow = i + 4
         '电话1
         arraySource(i, 3) = CStr(arraySource(i, 3))
         If Len(arraySource(i, 3)) > 0 Then
@@ -33,11 +33,11 @@ Sub 检查重复及错误()
                 repeatRange = dictionary(arraySource(i, 3))
                 arrayContent(i, 1) = "重复项在" & repeatRange & "单元格"
                 errorRow = Right(repeatRange, Len(repeatRange) - 1)
-                arrayContent(errorRow - 2, 第一次重复列数(repeatRange)) = "重复项在D" & currentRow & "单元格"
+                arrayContent(errorRow - 4, 第一次重复列数(repeatRange)) = "重复项在E" & currentRow & "单元格"
                 Rows(errorRow).Font.ColorIndex = 3
                 Rows(currentRow).Font.ColorIndex = 3
             Else
-                dictionary(CStr(arraySource(i, 3))) = "D" & currentRow
+                dictionary(arraySource(i, 3)) = "E" & currentRow
             End If
             '判断位数
             If Len(arraySource(i, 3)) = 7 And IsNumeric(arraySource(i, 3)) = True Then
@@ -59,11 +59,11 @@ Sub 检查重复及错误()
                 repeatRange = dictionary(arraySource(i, 4))
                 arrayContent(i, 2) = "重复项在" & repeatRange & "单元格"
                 errorRow = Right(repeatRange, Len(repeatRange) - 1)
-                arrayContent(errorRow - 2, 第一次重复列数(repeatRange)) = "重复项在E" & currentRow & "单元格"
+                arrayContent(errorRow - 4, 第一次重复列数(repeatRange)) = "重复项在F" & currentRow & "单元格"
                 Rows(errorRow).Font.ColorIndex = 4
                 Rows(currentRow).Font.ColorIndex = 4
             Else
-                dictionary(arraySource(i, 4)) = "E" & currentRow
+                dictionary(arraySource(i, 4)) = "F" & currentRow
             End If
             '判断位数
             If Len(arraySource(i, 3)) = 7 And IsNumeric(arraySource(i, 3)) = True Then
@@ -85,11 +85,11 @@ Sub 检查重复及错误()
                 repeatRange = dictionary(arraySource(i, 5))
                 arrayContent(i, 3) = "重复项在" & repeatRange & "单元格"
                 errorRow = Right(repeatRange, Len(repeatRange) - 1)
-                arrayContent(errorRow - 2, 第一次重复列数(repeatRange)) = "重复项在F" & currentRow & "单元格"
+                arrayContent(errorRow - 4, 第一次重复列数(repeatRange)) = "重复项在G" & currentRow & "单元格"
                 Rows(errorRow).Font.ColorIndex = 5
                 Rows(currentRow).Font.ColorIndex = 5
             Else
-                dictionary(arraySource(i, 5)) = "F" & currentRow
+                dictionary(arraySource(i, 5)) = "G" & currentRow
             End If
             '判断位数
             If Len(arraySource(i, 3)) = 7 And IsNumeric(arraySource(i, 3)) = True Then
@@ -102,14 +102,6 @@ Sub 检查重复及错误()
                 arrayContent(i, 5) = "位数错误或存在非数字"
                 Rows(currentRow).Font.ColorIndex = 17
             End If
-        End If
-        '地址是否有“社区”
-        commuityIndex = InStr(arraySource(i, 2), "社区")
-        If commuityIndex = 0 Then
-            arrayContent(i, 10) = "空"
-            Rows(currentRow).Font.ColorIndex = 14
-        Else
-            arraySource(i, 2) = Mid(arraySource(i, 2), commuityIndex + 2, Len(arraySource(i, 2)))
         End If
         '姓名+地址重复数
         nameAddress = arraySource(i, 1) & arraySource(i, 2)
@@ -142,9 +134,9 @@ Sub 检查重复及错误()
         If isErrors(8) = True Or Len(arrayContent(i, 9)) > 0 Then isErrors(8) = True
         If isErrors(9) = True Or Len(arrayContent(i, 10)) > 0 Then isErrors(9) = True
     Next i
-    Range("j2:s" & countRow) = ""
-    Range("j2:s2") = arrayTableTitle
-    Range("j3:s" & countRow) = arrayContent
+    Range("j5:s" & countRow) = ""
+    Range("j4:s4") = arrayTableTitle
+    Range("j5:s" & countRow) = arrayContent
     If isErrors(0) = False And isErrors(1) = False And isErrors(2) = False And isErrors(3) = False And isErrors(4) = False And isErrors(5) = False And isErrors(6) = False And isErrors(7) = False And isErrors(8) = False Then
         MsgBox "谢天谢地全部无错误！"
     Else
@@ -164,9 +156,9 @@ Function 第一次重复列数(s As String)
     Dim errorColumn As String, contentColumn As Integer, errorRange As String
     errorColumn = Left(s, 1)
     Select Case errorColumn
-        Case "D": contentColumn = 1
-        Case "E": contentColumn = 2
-        Case "F": contentColumn = 3
+        Case "E": contentColumn = 1
+        Case "F": contentColumn = 2
+        Case "G": contentColumn = 3
         Case Else: contentColumn = 0
     End Select
     第一次重复列数 = contentColumn
